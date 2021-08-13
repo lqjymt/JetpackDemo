@@ -1,2 +1,5 @@
 include ':app'
 rootProject.name = "JetpackDemo"
+
+include ':ui'
+include ':base'
