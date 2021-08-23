@@ -30,6 +30,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     }
     initView()
   }
-  abstract fun setViewBinding() : LayoutInflater
+
    abstract fun initView()
 }

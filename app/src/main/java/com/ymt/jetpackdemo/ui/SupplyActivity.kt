@@ -22,9 +22,7 @@ import com.ymt.jetpackdemo.util.Lg
 */
 class SupplyActivity : BaseActivity<ActivitySupplyBinding>() {
   private val model:SupplyViewModel by viewModels()
-  override fun setViewBinding(): LayoutInflater {
-   return layoutInflater
-  }
+
   private  var adapter: PurchaseAdapter? = null
   override fun initView() {
     model.getList()

@@ -1,13 +1,19 @@
 package com.ymt.jetpackdemo
 
+import android.Manifest.permission
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +23,10 @@ import com.ymt.jetpackdemo.databinding.ActivityMainBinding
 import com.ymt.jetpackdemo.life.MyObserve
 import com.ymt.jetpackdemo.mode.NameViewModel
 import com.ymt.jetpackdemo.ui.SupplyActivity
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.GlideEngine
+import com.zhihu.matisse.internal.entity.CaptureStrategy
 import kotlin.math.log
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -54,14 +64,44 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     return a+b
   }
 
-  override fun setViewBinding(): LayoutInflater {
-    return  layoutInflater
+  fun goPick(): Unit {
+    if (ContextCompat.checkSelfPermission(
+        this@MainActivity,
+        permission.READ_EXTERNAL_STORAGE
+      ) != PackageManager.PERMISSION_GRANTED
+    ) {
+      ActivityCompat.requestPermissions(
+        this@MainActivity,
+        arrayOf(permission.READ_EXTERNAL_STORAGE),
+        100
+      )
+      //没有 权限
+      Toast.makeText(this@MainActivity, "没有权限", Toast.LENGTH_SHORT).show()
+    } else {
+
+      //拥有 文件 权限
+      Matisse.from(this@MainActivity)
+        .choose(MimeType.ofImage())
+        .countable(true)
+        .capture(false)
+        .captureStrategy(
+          CaptureStrategy(true, "com.hmmy.courtyard.fileprovider", "智慧庭院")
+        )
+        .maxSelectable(9)
+        .isCrop(false) //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
+        .showSingleMediaType(true)
+        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        .thumbnailScale(0.85f)
+        .imageEngine(GlideEngine())
+        .originalEnable(true)
+        .maxOriginalSize(10)
+        .autoHideToolbarOnSingleTap(true)
+        .fotBothResult(99)
+    }
   }
 
   override fun initView() {
-    Handler(Looper.myLooper()!!).postDelayed(Runnable {
-      startActivity(Intent(this,SupplyActivity::class.java))
-    },500)
+
     lifecycle.addObserver(MyObserve())
     binding.show.text = "i am test view binding"
     val nameObserve = Observer<String>{newName->
@@ -70,7 +110,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     model.currentName.observe(this,nameObserve)
     binding.btn.setOnClickListener {
 //      model.currentName.postValue("i")
-      startActivity(Intent(this,SupplyActivity::class.java))
+//      startActivity(Intent(this,SupplyActivity::class.java))
+      goPick()
     }
 
     val person = Person(18, "andy")
