@@ -1,6 +1,5 @@
 package com.ymt.jetpackdemo.bean
 
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import java.util.LinkedHashMap
 
 /**

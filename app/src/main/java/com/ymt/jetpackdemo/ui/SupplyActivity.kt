@@ -1,17 +1,9 @@
 package com.ymt.jetpackdemo.ui
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.ymt.jetpackdemo.R
 import com.ymt.jetpackdemo.adapter.PurchaseAdapter
-import com.ymt.jetpackdemo.adapter.SupplyAdapter
 import com.ymt.jetpackdemo.base.BaseActivity
-import com.ymt.jetpackdemo.bean.PurchaseBean
 import com.ymt.jetpackdemo.databinding.ActivitySupplyBinding
 import com.ymt.jetpackdemo.mode.SupplyViewModel
 import com.ymt.jetpackdemo.util.Lg
